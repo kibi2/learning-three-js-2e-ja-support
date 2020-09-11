@@ -123,6 +123,7 @@
           new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true }),
         ];
 
+        // サーフェスとワイヤフレームの両方を描く，マテリアルの異なる複数の形状ができる
         var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, materials);
         mesh.children.forEach(function (e) {
           e.castShadow = true;
@@ -155,6 +156,7 @@
         var gui = new dat.GUI();
         gui.add(
           new (function () {
+            // クローンの例
             this.clone = function () {
               var clonedGeometry = mesh.children[0].geometry.clone();
               var materials = [
@@ -209,7 +211,7 @@
                 controlPoints[i].z
               );
             }
-            e.geometry.verticesNeedUpdate = true;
+            e.geometry.verticesNeedUpdate = true; // メッシュジオメトリが変更されたことを知らせる
             e.geometry.computeFaceNormals();
           });
 
