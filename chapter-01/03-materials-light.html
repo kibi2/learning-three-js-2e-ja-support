@@ -1,50 +1,51 @@
 <!DOCTYPE html>
 
 <html>
-
-<head>
+  <head>
     <title>Example 01.03 - Materials and light</title>
     <script type="text/javascript" src="../libs/three.js"></script>
     <script type="text/javascript" src="../libs/stats.js"></script>
     <script type="text/javascript" src="../libs/dat.gui.js"></script>
     <style>
-        body {
-            /* set margin to 0 and overflow to hidden, to go fullscreen */
-            margin: 0;
-            overflow: hidden;
-        }
+      body {
+        /* set margin to 0 and overflow to hidden, to go fullscreen */
+        margin: 0;
+        overflow: hidden;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <!-- Div which will hold the Output -->
+    <div id="WebGL-output"></div>
 
-<!-- Div which will hold the Output -->
-<div id="WebGL-output">
-</div>
-
-<!-- Javascript code that runs our Three.js examples -->
-<script type="text/javascript">
-
-    // once everything is loaded, we run our Three.js stuff.
-    function init() {
-
+    <!-- Javascript code that runs our Three.js examples -->
+    <script type="text/javascript">
+      // once everything is loaded, we run our Three.js stuff.
+      function init() {
         // create a scene, that will hold all our elements such as objects, cameras and lights.
         var scene = new THREE.Scene();
 
         // create a camera, which defines where we're looking at.
-        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
 
         // create a render and set the size
         var renderer = new THREE.WebGLRenderer();
 
-        renderer.setClearColor(new THREE.Color(0xEEEEEE));
+        renderer.setClearColor(new THREE.Color(0xeeeeee));
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.enabled = true; // 影を描画する
 
         // create the ground plane
+        // MeshLambertMaterial:光源に反応するマテリアル
         var planeGeometry = new THREE.PlaneGeometry(60, 20);
-        var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var planeMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
         var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-        plane.receiveShadow = true;
+        plane.receiveShadow = true; // 影を落とされる物体
 
         // rotate and position the plane
         plane.rotation.x = -0.5 * Math.PI;
@@ -57,9 +58,9 @@
 
         // create a cube
         var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
-        var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
+        var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
         var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        cube.castShadow = true;
+        cube.castShadow = true; // 影を落とす物体
 
         // position the cube
         cube.position.x = -4;
@@ -70,7 +71,7 @@
         scene.add(cube);
 
         var sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
-        var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
+        var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0x7777ff });
         var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
         // position the sphere
@@ -91,18 +92,18 @@
         // add spotlight for the shadows
         var spotLight = new THREE.SpotLight(0xffffff);
         spotLight.position.set(-20, 30, -5);
-        spotLight.castShadow = true;
+        spotLight.castShadow = true; // 影の発生源
         scene.add(spotLight);
 
         // add the output of the renderer to the html element
-        document.getElementById("WebGL-output").appendChild(renderer.domElement);
+        document
+          .getElementById("WebGL-output")
+          .appendChild(renderer.domElement);
 
         // call the render function
         renderer.render(scene, camera);
-    }
-    window.onload = init;
-
-
-</script>
-</body>
+      }
+      window.onload = init;
+    </script>
+  </body>
 </html>
