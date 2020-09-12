@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 
 <html>
-
-<head>
+  <head>
     <title>Example 09.08 - Orbit controls</title>
     <script type="text/javascript" src="../libs/three.js"></script>
 
     <script type="text/javascript" src="../libs/stats.js"></script>
     <script type="text/javascript" src="../libs/dat.gui.js"></script>
-    <script type="text/javascript" src="../libs/controls/OrbitControls.js"></script>
+    <script
+      type="text/javascript"
+      src="../libs/controls/OrbitControls.js"
+    ></script>
     <style>
-        body {
-            /* set margin to 0 and overflow to hidden, to go fullscreen */
-            margin: 0;
-            overflow: hidden;
-        }
+      body {
+        /* set margin to 0 and overflow to hidden, to go fullscreen */
+        margin: 0;
+        overflow: hidden;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div id="Stats-output"></div>
+    <!-- Div which will hold the Output -->
+    <div id="WebGL-output"></div>
 
-<div id="Stats-output">
-</div>
-<!-- Div which will hold the Output -->
-<div id="WebGL-output">
-</div>
-
-<!-- Javascript code that runs our Three.js examples -->
-<script type="text/javascript">
-
-    // once everything is loaded, we run our Three.js stuff.
-    function init() {
-
+    <!-- Javascript code that runs our Three.js examples -->
+    <script type="text/javascript">
+      // once everything is loaded, we run our Three.js stuff.
+      function init() {
         var stats = initStats();
 
         // create a scene, that will hold all our elements such as objects, cameras and lights.
         var scene = new THREE.Scene();
 
         // create a camera, which defines where we're looking at.
-        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
 
         // create a render and set the size
         var webGLRenderer = new THREE.WebGLRenderer();
@@ -67,59 +69,67 @@
         scene.add(spotLight);
 
         // add the output of the renderer to the html element
-        document.getElementById("WebGL-output").appendChild(webGLRenderer.domElement);
+        document
+          .getElementById("WebGL-output")
+          .appendChild(webGLRenderer.domElement);
 
         // call the render function
         var step = 0;
 
-
         render();
 
         function createMesh(geom) {
-            var textureLoader = new THREE.TextureLoader();
-            var planetTexture = textureLoader.load("../assets/textures/planets/mars_1k_color.jpg");
-            var normalTexture = textureLoader.load("../assets/textures/planets/mars_1k_normal.jpg");
+          var textureLoader = new THREE.TextureLoader();
+          var planetTexture = textureLoader.load(
+            "../assets/textures/planets/mars_1k_color.jpg"
+          );
+          var normalTexture = textureLoader.load(
+            "../assets/textures/planets/mars_1k_normal.jpg"
+          );
 
-            var planetMaterial = new THREE.MeshPhongMaterial({map: planetTexture, bumpMap: normalTexture});
+          var planetMaterial = new THREE.MeshPhongMaterial({
+            map: planetTexture,
+            bumpMap: normalTexture,
+          });
 
+          var wireFrameMat = new THREE.MeshBasicMaterial();
+          wireFrameMat.wireframe = true;
 
-            var wireFrameMat = new THREE.MeshBasicMaterial();
-            wireFrameMat.wireframe = true;
+          // create a multimaterial
+          var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [
+            planetMaterial,
+          ]);
 
-            // create a multimaterial
-            var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [planetMaterial]);
-
-            return mesh;
+          return mesh;
         }
 
         function render() {
-            stats.update();
+          stats.update();
 
-            //sphere.rotation.y=step+=0.01;
-            var delta = clock.getDelta();
-            orbitControls.update(delta);
+          //sphere.rotation.y=step+=0.01;
+          var delta = clock.getDelta();
+          orbitControls.update(delta);
 
-            // render using requestAnimationFrame
-            requestAnimationFrame(render);
-            webGLRenderer.render(scene, camera);
+          // render using requestAnimationFrame
+          requestAnimationFrame(render);
+          webGLRenderer.render(scene, camera);
         }
 
         function initStats() {
+          var stats = new Stats();
+          stats.setMode(0); // 0: fps, 1: ms
 
-            var stats = new Stats();
-            stats.setMode(0); // 0: fps, 1: ms
+          // Align top-left
+          stats.domElement.style.position = "absolute";
+          stats.domElement.style.left = "0px";
+          stats.domElement.style.top = "0px";
 
-            // Align top-left
-            stats.domElement.style.position = 'absolute';
-            stats.domElement.style.left = '0px';
-            stats.domElement.style.top = '0px';
+          document.getElementById("Stats-output").appendChild(stats.domElement);
 
-            document.getElementById("Stats-output").appendChild(stats.domElement);
-
-            return stats;
+          return stats;
         }
-    }
-    window.onload = init;
-</script>
-</body>
+      }
+      window.onload = init;
+    </script>
+  </body>
 </html>
