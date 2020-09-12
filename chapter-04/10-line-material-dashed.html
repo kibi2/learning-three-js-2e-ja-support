@@ -74,13 +74,13 @@
 
         lines.colors = colors;
 
-        lines.computeLineDistances();
+        lines.computeLineDistances(); // 距離を計算する
         var material = new THREE.LineDashedMaterial({
           vertexColors: true,
           color: 0xffffff,
-          dashSize: 2,
-          gapSize: 2,
-          scale: 0.1,
+          dashSize: 2 * 20,
+          gapSize: 2 * 2,
+          scale: 10, // dashSize, gapSize の拡大縮小
         });
 
         var line = new THREE.Line(lines, material);
